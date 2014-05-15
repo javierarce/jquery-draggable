@@ -11,7 +11,7 @@
 
         $.fn.drags = function(opt) {
 
-          opt = $.extend({ cursor: "move" }, opt);
+          opt = $.extend({ stickiness: 20, cursor: "move" }, opt);
 
           var $canvas = opt.canvas;
 
@@ -28,11 +28,15 @@
             var $drag = $(this).addClass('draggable');
 
             var
-            z_idx = $drag.css('z-index'),
-            drg_h = $drag.outerHeight(),
-            drg_w = $drag.outerWidth(),
-            pos_y = $drag.offset().top  + drg_h - e.pageY,
-            pos_x = $drag.offset().left + drg_w - e.pageX;
+            z_idx    = $drag.css('z-index'),
+            drg_h    = $drag.outerHeight(),
+            drg_w    = $drag.outerWidth(),
+            pos_y    = $drag.offset().top  + drg_h - e.pageY,
+            pos_x    = $drag.offset().left + drg_w - e.pageX,
+            canvas_x = $canvas.offset().left,
+            canvas_y = $canvas.offset().top,
+            canvas_w = $canvas.width(),
+            canvas_h = $canvas.height();
 
             var onMouseUp = function() {
               $(this).css('z-index', z_idx);
@@ -43,24 +47,25 @@
               var top  = e.pageY + pos_y - drg_h;
               var left = e.pageX + pos_x - drg_w;
 
-              var r = $canvas.offset().left + $canvas.width();
-              var b = $canvas.offset().top + $canvas.height();
+              var canvas_right  = canvas_x + canvas_w;
+              var canvas_bottom = canvas_y + canvas_h;
 
-              if (left - 20 < $canvas.offset().left ) {
-                left = $canvas.offset().left;
-              }  else if (left + drg_w + 20 >  r ) {
-                left = r - drg_w;
-              } 
+              // LEFT
+              if (left - opt.stickiness < canvas_x) {
+                left = canvas_x;
+              } else if (left + drg_w + opt.stickiness >  canvas_right ) {
+                left = canvas_right - drg_w;
+              }
 
-              if (top - 20 < $canvas.offset().top ) {
-                top = $canvas.offset().top;
-              } else if (top + drg_h + 20 >  b ) {
-                top = b - drg_h;
-              } 
+              // TOP
+              if (top - opt.stickiness < canvas_y) {
+                top = canvas_y;
+              } else if (top + drg_h + opt.stickiness >  canvas_bottom ) {
+                top = canvas_bottom - drg_h;
+              }
 
-
-              $('.draggable').offset({ top: top, left: left }).on("mouseup", onMouseUp);
-              
+              var offset = { top: top, left: left };
+              $('.draggable').offset(offset).on("mouseup", onMouseUp);
 
             }
 
