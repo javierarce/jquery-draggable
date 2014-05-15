@@ -14,6 +14,7 @@ $(function() {
     //$canvas.find(".line.horizontal").css( { left: 255, top: 0 });
 
     var onCanvasMouseUp = function() {
+      $(".draggable").removeClass('sticky');
       $(".draggable").removeClass('draggable');
     }
 
