@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://www.google.com/jsapi"></script>
+    <script>google.load("jquery", "1.7.1");</script>
+    <script>
+
+      $(function() {
+
+        $.fn.drags = function(opt) {
+
+          opt = $.extend({ cursor: "move" }, opt);
+
+          var onMouseDown = function(e) {
+
+            e.preventDefault(); 
+
+            var $drag = $(this).addClass('draggable');
+
+            var
+            z_idx = $drag.css('z-index'),
+            drg_h = $drag.outerHeight(),
+            drg_w = $drag.outerWidth(),
+            pos_y = $drag.offset().top  + drg_h - e.pageY,
+            pos_x = $drag.offset().left + drg_w - e.pageX;
+
+            var onMouseUp = function() {
+              $(this).css('z-index', z_idx);
+            };
+
+            var onMouseMove = function(e) {
+              
+              var top  = e.pageY + pos_y - drg_h;
+              var left = e.pageX + pos_x - drg_w;
+
+
+              $('.draggable').offset({ top: top, left: left }).on("mouseup", onMouseUp);
+
+            }
+
+            $drag.css('z-index', 1000).parents().on("mousemove", onMouseMove);
+
+          };
+
+          var onMouseUp = function() {
+            $(this).removeClass('draggable');
+          };
+
+          return this.css('cursor', opt.cursor).on("mousedown", onMouseDown).on("mouseup", onMouseUp);
+
+        }
+
+        $("div").drags();
+
+      });
+
+    </script>
+    <style>
+      div.draggable { background: #ccc; }
+      div {
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+        background: red;
+        color: white;
+        position: absolute;
+        left: 20px;
+        top: 20px;
+      }
+
+      .two { background: blue; left: 100px;  top: 100px; }
+
+    </style>
+  </head>
+  <body>
+    <div>Drag me</div>	 
+    <div class="two">Drag me</div>	 
+  </body>
+</html>
