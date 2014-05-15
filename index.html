@@ -5,87 +5,7 @@
     <title></title>
     <script src="http://www.google.com/jsapi"></script>
     <script>google.load("jquery", "1.7.1");</script>
-    <script>
-
-      $(function() {
-
-        $.fn.drags = function(opt) {
-
-          opt = $.extend({ stickiness: 20, cursor: "move" }, opt);
-
-          var $canvas = opt.canvas;
-
-          var onCanvasMouseUp = function() {
-            $(".draggable").removeClass('draggable');
-          }
-
-          $("body").on("mouseup", onCanvasMouseUp);
-
-          var onMouseDown = function(e) {
-
-            e.preventDefault(); 
-
-            var $drag = $(this).addClass('draggable');
-
-            var
-            z_idx    = $drag.css('z-index'),
-            drg_h    = $drag.outerHeight(),
-            drg_w    = $drag.outerWidth(),
-            pos_y    = $drag.offset().top  + drg_h - e.pageY,
-            pos_x    = $drag.offset().left + drg_w - e.pageX,
-            canvas_x = $canvas.offset().left,
-            canvas_y = $canvas.offset().top,
-            canvas_w = $canvas.width(),
-            canvas_h = $canvas.height();
-
-            var onMouseUp = function() {
-              $(this).css('z-index', z_idx);
-            };
-
-            var onMouseMove = function(e) {
-
-              var top  = e.pageY + pos_y - drg_h;
-              var left = e.pageX + pos_x - drg_w;
-
-              var canvas_right  = canvas_x + canvas_w;
-              var canvas_bottom = canvas_y + canvas_h;
-
-              // LEFT
-              if (left - opt.stickiness < canvas_x) {
-                left = canvas_x;
-              } else if (left + drg_w + opt.stickiness >  canvas_right ) {
-                left = canvas_right - drg_w;
-              }
-
-              // TOP
-              if (top - opt.stickiness < canvas_y) {
-                top = canvas_y;
-              } else if (top + drg_h + opt.stickiness >  canvas_bottom ) {
-                top = canvas_bottom - drg_h;
-              }
-
-              var offset = { top: top, left: left };
-              $('.draggable').offset(offset).on("mouseup", onMouseUp);
-
-            }
-
-            $drag.css('z-index', 1000).parents().on("mousemove", onMouseMove);
-
-          };
-
-          var onMouseUp = function() {
-            $(this).removeClass('draggable');
-          };
-
-          return this.css('cursor', opt.cursor).on("mousedown", onMouseDown).on("mouseup", onMouseUp);
-
-        }
-
-        $(".canvas > div").drags( { canvas: $(".canvas") } );
-
-      });
-
-    </script>
+    <script src="app.js"></script>
 
     <style>
 
@@ -100,7 +20,7 @@
         margin: 0;
       }
 
-      div {
+      .canvas > div {
         position: absolute;
         left: 20px;
         top: 20px;
@@ -111,9 +31,9 @@
         border-radius: 3px;
       }
 
-      div.draggable { background: #ccc; }
+      .canvas > div.two { background: blue; width: 50px; height: 100px; left: 100px;  top: 100px; }
 
-      .two { background: blue; width: 50px; height: 100px; left: 100px;  top: 100px; }
+      .canvas > div.draggable { background: #ccc; opacity: .8; }
 
       .canvas {
         position: absolute; 
@@ -128,11 +48,24 @@
         box-shadow: 0px 0px 7px #000;
       }
 
+      .line {
+        position:absolute;
+        width: 100%;
+        height: 1px;
+        color:red;
+      }
+
+      .horizontal {
+        height: 100%!Important;
+        width: 1px!Important;
+      }
+
     </style>
   </head>
   <body>
     <div class="canvas">
-      <div></div> <div class="two"></div>
+      <div></div> 
+      <div class="two"></div>
     </div>
   </body>
 </html>
