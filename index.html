@@ -17,21 +17,25 @@
       body {
         background: #333;
         padding: 0; 
+        font-family: "Helvetica", sans-serif;
         margin: 0;
       }
 
       .canvas > div {
         position: absolute;
-        left: 20px;
-        top: 20px;
-        width: 100px; height: 100px;
+        left: 0px;
+        top: 0px;
+        width: 100px; 
+        height: 100px;
 
-        background: red;
+        background: #f1f1f1;
         color: white;
         border-radius: 3px;
       }
 
-      .canvas > div.two { background: blue; width: 50px; height: 100px; left: 100px;  top: 100px; }
+      .canvas > div.one   { background: red;   width: 100px; height: 100px;  left: 250px; top: 100px; }
+      .canvas > div.two   { background: blue;  width: 50px;  height: 100px;  left: 100px; top: 100px; }
+      .canvas > div.three { background: green; width: 200px;  height: 100px; left: 400px; top: 250px; }
 
       .canvas > div.draggable { background: #ccc; opacity: .8; }
       .canvas > div.sticky { background: pink; }
@@ -49,11 +53,22 @@
         box-shadow: 0px 0px 7px #000;
       }
 
-      .line {
+      .canvas .info {
+        position:absolute;
+        bottom: 5px;
+        right: 5px;
+        background:#333;
+        padding: 5px 7px;
+        font-size: 11px;
+        color:#fff;
+        border-radius: 3px;
+      }
+
+      .canvas > div.line {
         position:absolute;
         width: 100%;
         height: 1px;
-        color:red;
+        background:red;
       }
 
       .horizontal {
@@ -65,8 +80,9 @@
   </head>
   <body>
     <div class="canvas">
-      <div></div> 
+      <div class="one"></div>
       <div class="two"></div>
+      <div class="three"></div>
     </div>
   </body>
 </html>

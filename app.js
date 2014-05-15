@@ -10,15 +10,9 @@ $(function() {
 
     self.allowDragging = true; 
 
-    //$canvas.append("<div class='line horizontal' />")
-    //$canvas.find(".line.horizontal").css( { left: 255, top: 0 });
-
-    var onCanvasMouseUp = function() {
-      $(".draggable").removeClass('sticky');
-      $(".draggable").removeClass('draggable');
-    }
-
-    $("body").on("mouseup", onCanvasMouseUp);
+    $canvas.append("<div class='line horizontal' />")
+    $canvas.find(".line.horizontal").offset( { left: 250});
+    $canvas.find(".line.horizontal").css( { top: 0 });
 
     var onMouseDown = function(e) {
 
@@ -60,12 +54,19 @@ $(function() {
         var top  = e.pageY + pos_y - drg_h;
         var left = e.pageX + pos_x - drg_w;
 
-        var otop = top; 
+        var otop  = top; 
         var oleft = left;
 
         var canvas_right  = canvas_x + canvas_w;
         var canvas_bottom = canvas_y + canvas_h;
 
+        var target_l = 250;
+
+        if ( ( left >= target_l - opt.stickiness ) && ( left <= target_l + opt.stickiness ) ) {
+          left = target_l ;
+        } else if ( ( left + drg_w <= target_l + opt.stickiness) && ( left + drg_w >= target_l - opt.stickiness ) ) {
+          left = target_l - drg_w ;
+        }
         // LEFT
         if (left - opt.stickiness < canvas_x) {
           left = canvas_x;
@@ -80,23 +81,12 @@ $(function() {
           top = canvas_bottom - drg_h;
         } 
 
+
         if (top == otop && left == oleft) {
           $(this).find(".draggable").removeClass("sticky");
         } else {
           $(this).find(".draggable").addClass("sticky");
         }
-
-        //var target_l = 250;
-
-        //if ( ( left >= target_l ) && ( left <= target_l + opt.stickiness ) ) {
-          //$(".draggable").css({background: "pink"})
-          //left = target_l + opt.stickiness - 5;
-        //} else if ( ( left >= target_l + drg_w ) && ( left <= target_l + opt.stickiness + drg_w ) ) {
-          //$(".draggable").css({background: "pink"})
-          //left = target_l + opt.stickiness + drg_w - 5;
-        //} else {
-          //$(".draggable").css({background: "#ccc"})
-        //}
 
         var offset = { top: top, left: left };
 
@@ -105,17 +95,21 @@ $(function() {
 
       }
 
-      //$drag.css('z-index', 1000).on("mousemove", onMouseMove);
       $drag.css('z-index', 1000).parents().on("mousemove", onMouseMove);
 
     };
 
-    var onMouseUp = function() {
-      $(this).removeClass('draggable');
-      $(this).removeClass('sticky');
+    var onExit = function() {
+      $(".draggable").parents().off("mousemove");
+
+      $(".draggable").removeClass('sticky');
+      $(".draggable").removeClass('draggable');
+
     };
 
-    return this.css('cursor', opt.cursor).on("mousedown", onMouseDown).on("mouseup", onMouseUp);
+    $("body").on("mouseup", onExit);
+
+    return this.css('cursor', opt.cursor).on("mousedown", onMouseDown).on("mouseup", onExit);
 
   }
 
