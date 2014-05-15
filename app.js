@@ -59,21 +59,32 @@ $(function() {
         var top  = e.pageY + pos_y - drg_h;
         var left = e.pageX + pos_x - drg_w;
 
+        var otop = top; 
+        var oleft = left;
+
         var canvas_right  = canvas_x + canvas_w;
         var canvas_bottom = canvas_y + canvas_h;
 
         // LEFT
         if (left - opt.stickiness < canvas_x) {
           left = canvas_x;
+          $drag.addClass("sticky");
         } else if (left + drg_w + opt.stickiness >  canvas_right ) {
           left = canvas_right - drg_w;
+          $drag.addClass("sticky");
         }
 
         // TOP
         if (top - opt.stickiness < canvas_y) {
           top = canvas_y;
+          $drag.addClass("sticky");
         } else if (top + drg_h + opt.stickiness >  canvas_bottom ) {
           top = canvas_bottom - drg_h;
+          $drag.addClass("sticky");
+        } 
+
+        if (top == otop && left == oleft) {
+          $drag.removeClass("sticky");
         }
 
         //var target_l = 250;
@@ -102,6 +113,7 @@ $(function() {
 
     var onMouseUp = function() {
       $(this).removeClass('draggable');
+      $(this).removeClass('sticky');
     };
 
     return this.css('cursor', opt.cursor).on("mousedown", onMouseDown).on("mouseup", onMouseUp);
