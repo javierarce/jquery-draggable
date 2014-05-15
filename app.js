@@ -10,9 +10,21 @@ $(function() {
 
     self.allowDragging = true; 
 
-    $canvas.append("<div class='line horizontal' />")
-    $canvas.find(".line.horizontal").offset( { left: 250});
-    $canvas.find(".line.horizontal").css( { top: 0 });
+    var vertical_guides = [350];
+
+    $canvas.append("<div class='line vertical one' />")
+    $canvas.find(".line.vertical.one").offset( { top: 350});
+    $canvas.find(".line.vertical.one").css( { left: 0 });
+
+    var horizontal_guides = [250, 500];
+
+    $canvas.append("<div class='line horizontal one' />")
+    $canvas.find(".line.horizontal.one").offset( { left: 250});
+    $canvas.find(".line.horizontal.one").css( { top: 0 });
+
+    $canvas.append("<div class='line horizontal two' />")
+    $canvas.find(".line.horizontal.two").offset( { left: 500});
+    $canvas.find(".line.horizontal.two").css( { top: 0 });
 
     var onMouseDown = function(e) {
 
@@ -60,13 +72,31 @@ $(function() {
         var canvas_right  = canvas_x + canvas_w;
         var canvas_bottom = canvas_y + canvas_h;
 
-        var target_l = 250;
+        for (var i = 0; i < vertical_guides.length; i++) {
 
-        if ( ( left >= target_l - opt.stickiness ) && ( left <= target_l + opt.stickiness ) ) {
-          left = target_l ;
-        } else if ( ( left + drg_w <= target_l + opt.stickiness) && ( left + drg_w >= target_l - opt.stickiness ) ) {
-          left = target_l - drg_w ;
+          var target_l = vertical_guides[i];
+
+          if ( ( top >= target_l - opt.stickiness ) && ( top <= target_l + opt.stickiness ) ) {
+            top = target_l;
+            break;
+          } else if ( ( top + drg_h <= target_l + opt.stickiness) && ( top + drg_h >= target_l - opt.stickiness ) ) {
+            top = target_l - drg_h ;
+            break;
+          }
         }
+        for (var i = 0; i < horizontal_guides.length; i++) {
+
+          var target_l = horizontal_guides[i];;
+
+          if ( ( left >= target_l - opt.stickiness ) && ( left <= target_l + opt.stickiness ) ) {
+            left = target_l;
+            break;
+          } else if ( ( left + drg_w <= target_l + opt.stickiness) && ( left + drg_w >= target_l - opt.stickiness ) ) {
+            left = target_l - drg_w ;
+            break;
+          }
+        }
+
         // LEFT
         if (left - opt.stickiness < canvas_x) {
           left = canvas_x;
