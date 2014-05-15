@@ -13,6 +13,14 @@
 
           opt = $.extend({ cursor: "move" }, opt);
 
+          var $canvas = opt.canvas;
+
+          var onCanvasMouseUp = function() {
+            $(".draggable").removeClass('draggable');
+          }
+
+          $("body").on("mouseup", onCanvasMouseUp);
+
           var onMouseDown = function(e) {
 
             e.preventDefault(); 
@@ -31,12 +39,28 @@
             };
 
             var onMouseMove = function(e) {
-              
+
               var top  = e.pageY + pos_y - drg_h;
               var left = e.pageX + pos_x - drg_w;
 
+              var r = $canvas.offset().left + $canvas.width();
+              var b = $canvas.offset().top + $canvas.height();
+
+              if (left - 20 < $canvas.offset().left ) {
+                left = $canvas.offset().left;
+              }  else if (left + drg_w + 20 >  r ) {
+                left = r - drg_w;
+              } 
+
+              if (top - 20 < $canvas.offset().top ) {
+                top = $canvas.offset().top;
+              } else if (top + drg_h + 20 >  b ) {
+                top = b - drg_h;
+              } 
+
 
               $('.draggable').offset({ top: top, left: left }).on("mouseup", onMouseUp);
+              
 
             }
 
@@ -52,7 +76,7 @@
 
         }
 
-        $("div").drags();
+        $(".canvas > div").drags( { canvas: $(".canvas") } );
 
       });
 
@@ -60,13 +84,22 @@
 
     <style>
 
+      body, html {
+        position:relative;
+        width: 100%; height: 100%;
+      }
+
+      body {
+        background: #333;
+        padding: 0; 
+        margin: 0;
+      }
+
       div {
         position: absolute;
         left: 20px;
         top: 20px;
         width: 100px; height: 100px;
-        line-height: 120%;
-        text-align: center;
 
         background: red;
         color: white;
@@ -75,12 +108,26 @@
 
       div.draggable { background: #ccc; }
 
-      .two { background: blue; left: 100px;  top: 100px; }
+      .two { background: blue; width: 50px; height: 100px; left: 100px;  top: 100px; }
+
+      .canvas {
+        position: absolute; 
+        width: 800px;
+        height: 400px;
+        margin-left: -400px;
+        margin-top: -200px;
+        top: 50%;
+        left: 50%;
+        background:#fff;
+        border-radius: 3px;
+        box-shadow: 0px 0px 7px #000;
+      }
 
     </style>
   </head>
   <body>
-    <div>Drag me</div>	 
-    <div class="two">Drag me</div>	 
+    <div class="canvas">
+      <div></div> <div class="two"></div>
+    </div>
   </body>
 </html>
