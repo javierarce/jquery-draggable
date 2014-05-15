@@ -65,10 +65,15 @@
       }
 
       .canvas > div.line {
+        opacity:0;
         position:absolute;
         width: 100%;
         height: 1px;
         background:red;
+      }
+
+      .canvas:hover > div.line {
+        opacity:.5;
       }
 
       .horizontal {
