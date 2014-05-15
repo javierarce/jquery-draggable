@@ -68,23 +68,21 @@ $(function() {
         // LEFT
         if (left - opt.stickiness < canvas_x) {
           left = canvas_x;
-          $drag.addClass("sticky");
         } else if (left + drg_w + opt.stickiness >  canvas_right ) {
           left = canvas_right - drg_w;
-          $drag.addClass("sticky");
         }
 
         // TOP
         if (top - opt.stickiness < canvas_y) {
           top = canvas_y;
-          $drag.addClass("sticky");
         } else if (top + drg_h + opt.stickiness >  canvas_bottom ) {
           top = canvas_bottom - drg_h;
-          $drag.addClass("sticky");
         } 
 
         if (top == otop && left == oleft) {
-          $drag.removeClass("sticky");
+          $(this).find(".draggable").removeClass("sticky");
+        } else {
+          $(this).find(".draggable").addClass("sticky");
         }
 
         //var target_l = 250;
