@@ -3,8 +3,10 @@ $(function() {
   $.fn.draggable = function(opt) {
 
     var self  = this;
-    var $rule  = null;
-    var $ruleH = null;
+    var $ruleA  = null;
+    var $ruleB = null;
+    var $ruleC = null;
+    var $ruleD = null;
 
     opt = $.extend({ horizontal_guides: [], vertical_guides: [], stickiness: 15, cursor: "move" }, opt);
 
@@ -18,13 +20,21 @@ $(function() {
 
     var vertical_limits, horizontal_limits, verticals, horizontals = []; 
 
-    $rule = $("<div class='rule' />");
-    $container.append($rule)
-    $rule.offset( { top: 0 }).css( { left: 0 });
+    $ruleA = $("<div class='rule' />");
+    $ruleA.offset( { top: 0 }).css( { left: 0 });
+    $container.append($ruleA)
 
-    $ruleH = $("<div class='rule horizontal' />");
-    $container.append($ruleH);
-    $ruleH.offset( { top: 0 }).css( { left: 0 });
+    $ruleB = $("<div class='rule' />");
+    $ruleB.offset( { top: 0 }).css( { left: 0 });
+    $container.append($ruleB);
+
+    $ruleC = $("<div class='rule horizontal' />");
+    $ruleC.offset( { top: 0 }).css( { left: 0 });
+    $container.append($ruleC);
+
+    $ruleD = $("<div class='rule horizontal' />");
+    $ruleD.offset( { top: 0 }).css( { left: 0 });
+    $container.append($ruleD);
 
     for (var i = 0; i < horizontal_guides.length; i++) {
 
@@ -83,8 +93,8 @@ $(function() {
         }
       });
 
-      verticals   = verticals.concat(vertical_limits, vertical_guides);
-      horizontals = horizontals.concat(horizontal_limits, horizontal_guides);
+      verticals   = verticals.concat(vertical_limits, vertical_guides).sort();
+      horizontals = horizontals.concat(horizontal_limits, horizontal_guides).sort();
 
       var onMouseUp = function() {
         $(this).css('z-index', z_idx);
@@ -111,12 +121,12 @@ $(function() {
 
           if ( ( top >= target_l - opt.stickiness ) && ( top <= target_l + opt.stickiness ) ) {
             top = target_l;
-            $ruleH.offset( { top: top }).css({ left: 0, opacity: 1 })
-            break;
+            $ruleC.offset( { top: top }).css({ left: 0, opacity: 1 })
+            //break;
           } else if ( ( top + drg_h <= target_l + opt.stickiness) && ( top + drg_h >= target_l - opt.stickiness ) ) {
             top = target_l - drg_h ;
-            $ruleH.offset( { top: top + drg_h }).css({ left: 0, opacity: 1 })
-            break;
+            $ruleD.offset( { top: top + drg_h }).css({ left: 0, opacity: 1 })
+            //break;
           }
 
         }
@@ -127,12 +137,12 @@ $(function() {
 
           if ( ( left >= target_l - opt.stickiness ) && ( left <= target_l + opt.stickiness ) ) {
             left = target_l;
-            $rule.offset( { left: left }).css({ top: 0, opacity: 1 })
-            break;
+            $ruleA.offset( { left: left }).css({ top: 0, opacity: 1 })
+            //break;
           } else if ( ( left + drg_w <= target_l + opt.stickiness) && ( left + drg_w >= target_l - opt.stickiness ) ) {
             left = target_l - drg_w ;
-            $rule.offset( { left: left + drg_w }).css({ top: 0, opacity: 1 })
-            break;
+            $ruleB.offset( { left: left + drg_w }).css({ top: 0, opacity: 1 })
+            //break;
           } 
 
         }
