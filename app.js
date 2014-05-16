@@ -10,35 +10,35 @@ $(function() {
 
     self.allowDragging = true; 
 
-    var horizontal_guides = [350];
+    // Guide offsets
+    var horizontal_guides = [350, 500];
+    var vertical_guides   = [400, 450]; 
 
-    $canvas.append("<div class='guide horizontal one' />")
-    $canvas.find(".guide.horizontal.one").offset( { top: 350});
-    $canvas.find(".guide.horizontal.one").css( { left: 0 });
+    for (var i = 0; i < horizontal_guides.length; i++) {
 
-    var vertical_guides = [250, 500];
+      var position = horizontal_guides[i];
 
-    $canvas.append("<div class='guide vertical one' />")
-    $canvas.find(".guide.vertical.one").offset( { left: 250});
-    $canvas.find(".guide.vertical.one").css( { top: 0 });
+      var $el = $("<div class='guide horizontal' />");
+      $canvas.append($el)
 
-    $canvas.append("<div class='guide vertical two' />")
-    $canvas.find(".guide.vertical.two").offset( { left: 500});
-    $canvas.find(".guide.vertical.two").css( { top: 0 });
+      $el.offset( { top: position }).css( { left: 0 });
+
+    }
+
+    for (var i = 0; i < vertical_guides.length; i++) {
+
+      var position = vertical_guides[i];
+
+      var $el = $("<div class='guide vertical' />");
+      $canvas.append($el)
+      $el.offset( { left: position }).css( { top: 0 });
+    }
 
     var onMouseDown = function(e) {
 
       self.allowDragging = true;
 
       e.preventDefault(); 
-
-      var positions = $canvas.find("div").map(function() {
-
-        var l = $(this).offset().left;
-
-        return l;
-
-      });
 
       var $drag = $(this).addClass('draggable');
 
@@ -72,6 +72,7 @@ $(function() {
         var canvas_right  = canvas_x + canvas_w;
         var canvas_bottom = canvas_y + canvas_h;
 
+        // CHECK GUIDES
         for (var i = 0; i < horizontal_guides.length; i++) {
 
           var target_l = horizontal_guides[i];
@@ -84,6 +85,7 @@ $(function() {
             break;
           }
         }
+
         for (var i = 0; i < vertical_guides.length; i++) {
 
           var target_l = vertical_guides[i];
@@ -143,6 +145,6 @@ $(function() {
 
   }
 
-  $(".canvas > div").drags( { canvas: $(".canvas") } );
+  $(".canvas > .block").drags( { canvas: $(".canvas") } );
 
 });
