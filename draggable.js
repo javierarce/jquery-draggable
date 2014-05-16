@@ -1,21 +1,22 @@
 $(function() {
 
-  $.fn.drags = function(opt) {
+  $.fn.draggable = function(opt) {
 
-    var self = this;
+    var self  = this;
     var $rule  = null;
     var $ruleH = null;
 
-    opt = $.extend({ stickiness: 15, cursor: "move" }, opt);
+    opt = $.extend({ horizontal_guides: [], vertical_guides: [], stickiness: 15, cursor: "move" }, opt);
 
     var $canvas = opt.canvas;
 
     self.allowDragging = true; 
 
     // Guide offsets
-    var horizontal_guides = [500, 200];
-    var vertical_guides   = [400, 500]; 
-    var vertical_limits,  horizontal_limits, verticals, horizontals = []; 
+    var horizontal_guides = opt.horizontal_guides;
+    var vertical_guides   = opt.vertical_guides;
+
+    var vertical_limits, horizontal_limits, verticals, horizontals = []; 
 
     $rule = $("<div class='rule' />");
     $canvas.append($rule)
@@ -183,38 +184,5 @@ $(function() {
     return this.css('cursor', opt.cursor).on("mousedown", onMouseDown).on("mouseup", onExit);
 
   }
-
-  var colors = ["#1abc9c", "#16a085", "#f39c12", "#3498db", "#9b59b6", "#e67e22", "#f1c40f", "#e74c3c"];
-
-  var ol = $(".canvas").offset().left;
-  var ot = $(".canvas").offset().top;
-  var cw = $(".canvas").width();
-  var ch = $(".canvas").height();
-  var cl = ol + cw;
-  var ct = ot + ch;
-
-  for (var i = 0; i < 5; i++) {
-
-    $block = $("<div class='block' />");
-
-    var w = Math.round(30 + Math.random() * 100);
-    var h = Math.round(30 + Math.random() * 100);
-
-    var l = Math.round(Math.random() * cw);
-    var t = Math.round(Math.random() * ch);
-
-    while ( (l + ol + w) >= cl || (t + ot + h) >= ct) {
-      l = Math.round(Math.random() * cw);
-      t = Math.round(Math.random() * ch);
-    }
-
-    var color = colors[Math.round(Math.random() * (colors.length - 1))];
-
-    $block.offset({ left: l, top: t }).css({ width: w, height: h, backgroundColor: color });
-    $(".canvas").append($block);
-
-  }
-
-  $(".canvas > .block").drags( { canvas: $(".canvas") } );
 
 });
