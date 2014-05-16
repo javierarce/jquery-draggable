@@ -1,6 +1,8 @@
 draggable
 =========
 
+Experimental jQuery plugin to drag things.
+
 ## How to use it
 
     $(".block").draggable({ 
