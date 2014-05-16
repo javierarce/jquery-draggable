@@ -5,7 +5,7 @@ $(function() {
     var self = this;
     var $guide = null;
 
-    opt = $.extend({ stickiness: 10, cursor: "move" }, opt);
+    opt = $.extend({ stickiness: 15, cursor: "move" }, opt);
 
     var $canvas = opt.canvas;
 
