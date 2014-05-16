@@ -3,7 +3,8 @@ $(function() {
   $.fn.drags = function(opt) {
 
     var self = this;
-    var $guide = null;
+    var $rule  = null;
+    var $ruleH = null;
 
     opt = $.extend({ stickiness: 15, cursor: "move" }, opt);
 
@@ -15,6 +16,14 @@ $(function() {
     var horizontal_guides = [500, 200];
     var vertical_guides   = [400, 500]; 
     var vertical_limits,  horizontal_limits, verticals, horizontals = []; 
+
+    $rule = $("<div class='rule' />");
+    $canvas.append($rule)
+    $rule.offset( { top: 0 }).css( { left: 0 });
+
+    $ruleH = $("<div class='rule horizontal' />");
+    $canvas.append($ruleH);
+    $ruleH.offset( { top: 0 }).css( { left: 0 });
 
     for (var i = 0; i < horizontal_guides.length; i++) {
 
@@ -101,9 +110,11 @@ $(function() {
 
           if ( ( top >= target_l - opt.stickiness ) && ( top <= target_l + opt.stickiness ) ) {
             top = target_l;
+            $ruleH.offset( { top: top }).css({ left: 0, opacity: 1 })
             break;
           } else if ( ( top + drg_h <= target_l + opt.stickiness) && ( top + drg_h >= target_l - opt.stickiness ) ) {
             top = target_l - drg_h ;
+            $ruleH.offset( { top: top + drg_h }).css({ left: 0, opacity: 1 })
             break;
           }
 
@@ -115,11 +126,13 @@ $(function() {
 
           if ( ( left >= target_l - opt.stickiness ) && ( left <= target_l + opt.stickiness ) ) {
             left = target_l;
+            $rule.offset( { left: left }).css({ top: 0, opacity: 1 })
             break;
           } else if ( ( left + drg_w <= target_l + opt.stickiness) && ( left + drg_w >= target_l - opt.stickiness ) ) {
             left = target_l - drg_w ;
+            $rule.offset( { left: left + drg_w }).css({ top: 0, opacity: 1 })
             break;
-          }
+          } 
 
         }
 
@@ -140,6 +153,7 @@ $(function() {
 
         if (top == otop && left == oleft) {
           $(this).find(".draggable").removeClass("sticky");
+          $(".rule").css({ opacity: 0 });
         } else {
           $(this).find(".draggable").addClass("sticky");
         }
@@ -157,6 +171,7 @@ $(function() {
 
     var onExit = function() {
       $(".draggable").parents().off("mousemove");
+      $(".rule").css({ opacity: 0 });
 
       $(".draggable").removeClass('sticky');
       $(".draggable").removeClass('draggable');
