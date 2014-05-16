@@ -21,7 +21,7 @@
         margin: 0;
       }
 
-      .canvas > div {
+      .canvas > div.block {
         position: absolute;
         left: 0px;
         top: 0px;
@@ -31,14 +31,14 @@
         background: #f1f1f1;
         color: white;
         border-radius: 3px;
+
+        transition: background .20s ease-in-out;
+        -moz-transition: background .20s ease-in-out;
+        -webkit-transition: background .20s ease-in-out;       
       }
 
-      .canvas > div.one   { background: red;   width: 100px; height: 100px;  left: 250px; top: 100px; }
-      .canvas > div.two   { background: blue;  width: 50px;  height: 100px;  left: 100px; top: 100px; }
-      .canvas > div.three { background: green; width: 200px;  height: 100px; left: 400px; top: 250px; }
-
-      .canvas > div.draggable { background: #ccc; opacity: .8; }
-      .canvas > div.sticky { background: pink; }
+      .canvas > div.block.draggable { background: #ccc!Important; opacity: .7; }
+      .canvas > div.block.sticky { background: pink!important; }
 
       .canvas {
         position: absolute; 
@@ -51,6 +51,7 @@
         background:#fff;
         border-radius: 3px;
         box-shadow: 0px 0px 7px #000;
+
       }
 
       .canvas .info {
@@ -97,9 +98,6 @@
   </head>
   <body>
     <div class="canvas">
-      <div class="block one"></div>
-      <div class="block two"></div>
-      <div class="block three"></div>
     </div>
   </body>
 </html>

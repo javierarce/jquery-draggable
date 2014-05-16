@@ -5,7 +5,7 @@ $(function() {
     var self = this;
     var $guide = null;
 
-    opt = $.extend({ stickiness: 20, cursor: "move" }, opt);
+    opt = $.extend({ stickiness: 10, cursor: "move" }, opt);
 
     var $canvas = opt.canvas;
 
@@ -166,6 +166,37 @@ $(function() {
     $("body").on("mouseup", onExit);
 
     return this.css('cursor', opt.cursor).on("mousedown", onMouseDown).on("mouseup", onExit);
+
+  }
+
+  var colors = ["#1abc9c", "#16a085", "#f39c12", "#3498db", "#9b59b6", "#e67e22", "#f1c40f", "#e74c3c"];
+
+  var ol = $(".canvas").offset().left;
+  var ot = $(".canvas").offset().top;
+  var cw = $(".canvas").width();
+  var ch = $(".canvas").height();
+  var cl = ol + cw;
+  var ct = ot + ch;
+
+  for (var i = 0; i < 5; i++) {
+
+    $block = $("<div class='block' />");
+
+    var w = Math.round(30 + Math.random() * 100);
+    var h = Math.round(30 + Math.random() * 100);
+
+    var l = Math.round(Math.random() * cw);
+    var t = Math.round(Math.random() * ch);
+
+    while ( (l + ol + w) >= cl || (t + ot + h) >= ct) {
+      l = Math.round(Math.random() * cw);
+      t = Math.round(Math.random() * ch);
+    }
+
+    var color = colors[Math.round(Math.random() * (colors.length - 1))];
+
+    $block.offset({ left: l, top: t }).css({ width: w, height: h, backgroundColor: color });
+    $(".canvas").append($block);
 
   }
 
