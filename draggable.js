@@ -8,7 +8,7 @@ $(function() {
 
     opt = $.extend({ horizontal_guides: [], vertical_guides: [], stickiness: 15, cursor: "move" }, opt);
 
-    var $canvas = opt.canvas;
+    var $container = opt.container;
 
     self.allowDragging = true; 
 
@@ -19,11 +19,11 @@ $(function() {
     var vertical_limits, horizontal_limits, verticals, horizontals = []; 
 
     $rule = $("<div class='rule' />");
-    $canvas.append($rule)
+    $container.append($rule)
     $rule.offset( { top: 0 }).css( { left: 0 });
 
     $ruleH = $("<div class='rule horizontal' />");
-    $canvas.append($ruleH);
+    $container.append($ruleH);
     $ruleH.offset( { top: 0 }).css( { left: 0 });
 
     for (var i = 0; i < horizontal_guides.length; i++) {
@@ -31,7 +31,7 @@ $(function() {
       var position = horizontal_guides[i];
 
       var $el = $("<div class='guide horizontal' />");
-      $canvas.append($el)
+      $container.append($el)
 
       $el.offset( { top: position }).css( { left: 0 });
 
@@ -42,7 +42,7 @@ $(function() {
       var position = vertical_guides[i];
 
       var $el = $("<div class='guide vertical' />");
-      $canvas.append($el)
+      $container.append($el)
       $el.offset( { left: position }).css( { top: 0 });
     }
 
@@ -60,10 +60,10 @@ $(function() {
       drg_w    = $drag.outerWidth(),
       pos_y    = $drag.offset().top  + drg_h - e.pageY,
       pos_x    = $drag.offset().left + drg_w - e.pageX,
-      canvas_x = $canvas.offset().left,
-      canvas_y = $canvas.offset().top,
-      canvas_w = $canvas.width(),
-      canvas_h = $canvas.height();
+      container_x = $container.offset().left,
+      container_y = $container.offset().top,
+      container_w = $container.width(),
+      container_h = $container.height();
 
       verticals = [];
       horizontals = [];
@@ -101,8 +101,8 @@ $(function() {
         var otop  = top; 
         var oleft = left;
 
-        var canvas_right  = canvas_x + canvas_w;
-        var canvas_bottom = canvas_y + canvas_h;
+        var container_right  = container_x + container_w;
+        var container_bottom = container_y + container_h;
 
         // CHECK GUIDES
         for (var i = 0; i < horizontals.length; i++) {
@@ -138,17 +138,17 @@ $(function() {
         }
 
         // LEFT
-        if (left - opt.stickiness < canvas_x) {
-          left = canvas_x;
-        } else if (left + drg_w + opt.stickiness >  canvas_right ) {
-          left = canvas_right - drg_w;
+        if (left - opt.stickiness < container_x) {
+          left = container_x;
+        } else if (left + drg_w + opt.stickiness >  container_right ) {
+          left = container_right - drg_w;
         }
 
         // TOP
-        if (top - opt.stickiness < canvas_y) {
-          top = canvas_y;
-        } else if (top + drg_h + opt.stickiness >  canvas_bottom ) {
-          top = canvas_bottom - drg_h;
+        if (top - opt.stickiness < container_y) {
+          top = container_y;
+        } else if (top + drg_h + opt.stickiness >  container_bottom ) {
+          top = container_bottom - drg_h;
         } 
 
 
