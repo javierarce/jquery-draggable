@@ -3,6 +3,7 @@ $(function() {
   $.fn.drags = function(opt) {
 
     var self = this;
+    var $guide = null;
 
     opt = $.extend({ stickiness: 20, cursor: "move" }, opt);
 
@@ -11,8 +12,9 @@ $(function() {
     self.allowDragging = true; 
 
     // Guide offsets
-    var horizontal_guides = [350, 500];
-    var vertical_guides   = [400, 450]; 
+    var horizontal_guides = [500, 200];
+    var vertical_guides   = [400, 500]; 
+    var vertical_limits,  horizontal_limits, verticals, horizontals = []; 
 
     for (var i = 0; i < horizontal_guides.length; i++) {
 
@@ -53,10 +55,30 @@ $(function() {
       canvas_w = $canvas.width(),
       canvas_h = $canvas.height();
 
+      verticals = [];
+      horizontals = [];
+      vertical_limits   = [];
+      horizontal_limits = [];
+
+      $(".block").each(function(i, e) {
+        if (!$(e).hasClass("draggable")) {
+
+          var t = $(e).offset().top;
+          horizontal_limits.push(t);
+          horizontal_limits.push(t + $(e).height());
+
+          var l = $(e).offset().left;
+          vertical_limits.push(l);
+          vertical_limits.push(l + $(e).width());
+        }
+      });
+
+      verticals   = verticals.concat(vertical_limits, vertical_guides);
+      horizontals = horizontals.concat(horizontal_limits, horizontal_guides);
+
       var onMouseUp = function() {
         $(this).css('z-index', z_idx);
         self.allowDragging = false;
-        //$canvas.find(".guide").remove();
       };
 
       var onMouseMove = function(e) {
@@ -73,9 +95,9 @@ $(function() {
         var canvas_bottom = canvas_y + canvas_h;
 
         // CHECK GUIDES
-        for (var i = 0; i < horizontal_guides.length; i++) {
+        for (var i = 0; i < horizontals.length; i++) {
 
-          var target_l = horizontal_guides[i];
+          var target_l = horizontals[i];
 
           if ( ( top >= target_l - opt.stickiness ) && ( top <= target_l + opt.stickiness ) ) {
             top = target_l;
@@ -84,11 +106,12 @@ $(function() {
             top = target_l - drg_h ;
             break;
           }
+
         }
 
-        for (var i = 0; i < vertical_guides.length; i++) {
+        for (var i = 0; i < verticals.length; i++) {
 
-          var target_l = vertical_guides[i];
+          var target_l = verticals[i];
 
           if ( ( left >= target_l - opt.stickiness ) && ( left <= target_l + opt.stickiness ) ) {
             left = target_l;
@@ -97,6 +120,7 @@ $(function() {
             left = target_l - drg_w ;
             break;
           }
+
         }
 
         // LEFT
