@@ -8,6 +8,8 @@ $(function() {
     var $ruleC = null;
     var $ruleD = null;
 
+    var $elements = this; 
+
     opt = $.extend({ horizontal_guides: [], vertical_guides: [], stickiness: 15, cursor: "move" }, opt);
 
     var $container = opt.container;
@@ -61,6 +63,7 @@ $(function() {
       self.allowDragging = true;
 
       e.preventDefault(); 
+      e.stopPropagation();
 
       var $drag = $(this).addClass('draggable');
 
@@ -80,7 +83,8 @@ $(function() {
       vertical_limits   = [];
       horizontal_limits = [];
 
-      $(".block").each(function(i, e) {
+      $elements.each(function(i, e) {
+
         if (!$(e).hasClass("draggable")) {
 
           var t = $(e).offset().top;
@@ -90,7 +94,9 @@ $(function() {
           var l = $(e).offset().left;
           vertical_limits.push(l);
           vertical_limits.push(l + $(e).width());
+
         }
+
       });
 
       verticals   = verticals.concat(vertical_limits, vertical_guides).sort();
